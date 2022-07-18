@@ -214,9 +214,9 @@ const AddPages: React.FC<any> = ({ pagePermission }) => {
         setFormFields(arrFields);
       });
   };
-  const fetchDataForEdit = (bank_id: any) => {
+  const fetchDataForEdit = (page_id: any) => {
     setUpdateMode(false);
-    fetch(URL + "api/BankNames/GetDataById?id=" + bank_id, {
+    fetch(URL + "api/Pages/" + page_id, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + JSON.parse(accessToken).access_token,
@@ -224,8 +224,8 @@ const AddPages: React.FC<any> = ({ pagePermission }) => {
     })
       .then((response) => response.json())
       .then((json) => {
-        if (json.bank_name === null) {
-          json.bank_name = "";
+        if (json.page_name === null) {
+          json.page_name = "";
         }
 
         console.log("get data by id data", json);
@@ -234,13 +234,23 @@ const AddPages: React.FC<any> = ({ pagePermission }) => {
           element.disabled = false;
         });
         arrFields[1].defaultValue = {
-          label: json.branch_city_name,
-          value: json.branch_city_id,
+          label: json.module_id,
+          value: json.module_id,
         };
         let obj = initialValues;
-        obj.bank_id = json.bank_id;
-        obj.bank_name = json.bank_name;
-        obj.branch_city = json.branch_city;
+
+        // page_id: 0,
+        // page_name: "",
+        // page_url: "",
+        // module: "",
+        // module_id: 0,
+        // module_name: "",
+
+
+        obj.page_id = json.page_id;
+        obj.page_name = json.page_name;
+        obj.page_url = json.page_link;
+        obj.module_name = json.module_id;
         setFormFields(arrFields);
 
         setInitialValues(obj);
@@ -249,11 +259,11 @@ const AddPages: React.FC<any> = ({ pagePermission }) => {
   };
   const formSubmit = (data: any) => {
     console.log(data , "data_________");
-    
+  
     fetch(
       URL +
         (updateMode
-          ? "api/BankNames/PutData?id=" + initialValues.bank_id
+          ? "api/Pages"
           : "api/Pages"),
       {
         method: updateMode ? "PUT" : "POST",
@@ -262,15 +272,15 @@ const AddPages: React.FC<any> = ({ pagePermission }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          page_id: data.page_id,
           page_name: data.page_name,
           page_link: data.page_url,
           module_id: data.module_name,
         }),
       }
     ).then((response) => {
-      console.log(response , "role");
-      
-      if (response.status === 200) {
+      console.log(response , "role"); 
+      if (response.status === 200 || response.status === 204 ) {
         toast.success(
           "Page Name has been " +
             (updateMode ? "Updated" : "Added" + " successfully!")

@@ -183,7 +183,14 @@ const RolePermission: React.FC<any> = () => {
       ) : (
         <>
           <>
-            {" "}
+            <div
+              className={`container-fluid page-title-bar ${
+                showNavMenu == false ? "right_col-margin-remove" : ""
+              }   `}
+            >
+              <span>&nbsp; Role Permission</span>
+            </div>
+
             <div
               className={`right_col  h-10 heightFixForFAult  ${
                 showNavMenu == false ? "right_col-margin-remove" : " "
@@ -194,23 +201,31 @@ const RolePermission: React.FC<any> = () => {
                 <div className="x_title mt-2 ">
                   <div
                     className="col-md-8 col-sm-8   d-flex justify-content-around align-items-center pl-0"
-                    style={{ paddingRight: "40%" }}
+                    style={{ paddingRight: "20%" }}
                   >
-                    <Select
-                      className="basic-single"
-                      classNamePrefix="select"
-                      defaultValue={"Active"}
-                      value={roleValue}
-                      onChange={(value: any) => {
-                        setRoleVAlue(value);
-                        setRoleToBeSearch(value.value);
-                        fetchAllData(value.value);
-                      }}
-                      isSearchable={true}
-                      name="color"
-                      options={roleOptions}
-                      styles={customStyles}
-                    />
+                    <div className="field item form-group col-md-12 col-sm-12  ">
+                      <label className="col-form-label col-md-3 col-sm-3 label-align">
+                        Select Role
+                        <span className="required">*</span>
+                      </label>
+                      <div className="col-md-8 col-sm-8">
+                        <Select
+                          className="basic-single"
+                          classNamePrefix="select"
+                          defaultValue={"Active"}
+                          value={roleValue}
+                          onChange={(value: any) => {
+                            setRoleVAlue(value);
+                            setRoleToBeSearch(value.value);
+                            fetchAllData(value.value);
+                          }}
+                          isSearchable={true}
+                          name="color"
+                          options={roleOptions}
+                          styles={customStyles}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="col-md-4  text-right px-0">
                     {RoleToBeSearch === "" ||
